@@ -1,0 +1,26 @@
+#Create Curl
+curl -i -u SY:python -H "Content-Type: application/json" -X POST -d '{"bridge":"br0"}' http://localhost:5000/ovs/api/create/enp0s3
+
+#Read Curl
+curl -i -u SY:python http://localhost:5000/ovs/api/read/br0
+
+#Update Curl
+curl -i -u SY:python -H "Content-Type: application/json" -X PUT -d '{"bridge":"br0","state":"down"}' http://localhost:5000/ovs/api/update/enp0s3
+
+
+#Delete Curl
+curl -i -u SY:python -H "Content-Type: application/json" -X DELETE -d '{"bridge":"br0"}' http://localhost:5000/ovs/api/delete/enp0s3
+
+--------------------------------------------------------------------------------------
+
+#Create Vlan Curl
+curl -i -u SY:python -H "Content-Type: application/json" -X POST -d '{"bridge":"br0","tag":"tag=12","type":"type=internal"}' http://localhost:5000/ovs/api/vlan/vlan12
+
+#Read VLAN Curl
+curl -i -u SY:python http://localhost:5000/ovs/api/vlan/read
+
+#Update VLAN Curl
+curl -i -u SY:python -H "Content-Type: application/json" -X PUT -d '{"tag":"tag=13"}' http://localhost:5000/ovs/api/update/tag/vlan12
+
+#Delete VLAN Curl
+curl -i  -u SY:python -H "Content-Type: application/json" -X DELETE -d '{"bridge":"br0"}' http://localhost:5000/ovs/api/delete/vlan/vlan12

@@ -20,11 +20,11 @@ def unauthorized():
     return make_response(jsonify({'error': 'unauthorized access'}), 403)
 
 #Read
-@ovs.route('/ovs/api/read', methods=['GET'])
+@ovs.route('/ovs/api/read/<bridge>', methods=['GET'])
 @auth.login_required
-def get_port():
-    
-    return lists.get_ports()
+def get_port(bridge):
+     
+    return lists.get_ports(bridge)
 
 #Create
 @ovs.route('/ovs/api/create/<port>', methods=['POST'])
@@ -39,18 +39,19 @@ def create_port(port):
             'Bridge': request.json.get('Bridge', bridge),
             'Port': request.json.get('Port', port),
             'Interface': request.json.get('Interface', port)
-           # 'type': request.json.get('type', "internal")
+           
 }
     return jsonify({bridge: brarray}), 201
-   #return jsonify({'bridge': bridge, 'port': port}), 201      
+
 
 #Update
 @ovs.route('/ovs/api/update/<port>', methods=['PUT'])
 @auth.login_required
 def update_port(port):
-    tp = request.json['type']
-    lists.update_port(port, tp)
-    return jsonify({'port': port,'type': tp})
+    state = request.json['state']
+    bridge=request.json['bridge']
+    lists.update_port(bridge, port, state)
+    return jsonify({'bridge':bridge, 'port': port, 'state': state})
 
 #Delete
 @ovs.route('/ovs/api/delete/<port>', methods=['DELETE'])
@@ -78,7 +79,9 @@ def create_vlan(vlan):
 @ovs.route('/ovs/api/vlan/read', methods=['GET'])
 @auth.login_required
 def get_vlan():
-    return lists.get_VLAN()
+    
+    return lists.get_vlan()
+    
 
 #Update (VLAN)
 @ovs.route('/ovs/api/update/tag/<port>', methods=['PUT'])
@@ -160,11 +163,13 @@ def get_vlan():
     return lists.get_VLAN()
 
 #Update (VLAN)
-@ovsclient.route('/ovs/api/update/tag/<port>', methods=['PUT'])
-def update_vlan(port):
-    tag=request.json['tag']
-    lists.update_vlan(port, tag)
-    return jsonify({'port': port, 'tag': tag})
+@ovsclient.route('/ovs/api/update/<port>', methods=['PUT'])
+@auth.login_required
+def update_port(port):
+    state = request.json['state']
+    bridge=request.json['bridge']
+    lists.update_port(bridge, port, state)
+    return jsonify({'bridge':bridge, 'port': port, 'state': state})
 
 #DELETE (VLAN)
 @ovsclient.route('/ovs/api/delete/vlan/<vlan>', methods=['DELETE'])
