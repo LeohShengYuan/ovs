@@ -5,7 +5,7 @@ curl -i -u SY:python -H "Content-Type: application/json" -X POST -d '{"bridge":"
 curl -i -u SY:python http://localhost:5000/ovs/api/read/br0
 
 #Update Curl
-curl -i -u SY:python -H "Content-Type: application/json" -X PUT -d '{"bridge":"br0","state":"down"}' http://localhost:5000/ovs/api/update/enp0s3
+curl -i -u SY:python -H "Content-Type: application/json" -X PUT -d '{"bridge":"br0","config":"no-stp"}' http://localhost:5000/ovs/api/update/enp0s3
 
 
 #Delete Curl
@@ -24,3 +24,18 @@ curl -i -u SY:python -H "Content-Type: application/json" -X PUT -d '{"tag":"tag=
 
 #Delete VLAN Curl
 curl -i  -u SY:python -H "Content-Type: application/json" -X DELETE -d '{"bridge":"br0"}' http://localhost:5000/ovs/api/delete/vlan/vlan12
+
+----------------------------------------------------------------------------------------
+
+#Create Port VLAN Curl
+curl -i -u SY:python -H "Content-Type: application/json" -X POST -d '{"tag":"tag=13"}' http://localhost:5000/ovs/api/port/enp0s3
+
+#Update Port VLAN Curl
+curl -i -u SY:python -H "Content-Type: application/json" -X PUT -d '{"tag":"tag=15"}' http://localhost:5000/ovs/api/update/tag/enp0s3
+
+#Delete Port VLAN Curl
+curl -i  -u SY:python -H "Content-Type: application/json" -X DELETE -d '{"tag":"15"}' http://localhost:5000/ovs/api/delete/port/enp0s3
+
+#Read Port Vlan Curl
+curl -i -u SY:python http://localhost:5000/ovs/api/port/read
+
